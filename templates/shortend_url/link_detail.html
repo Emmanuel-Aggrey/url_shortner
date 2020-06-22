@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+	<p>id: <span style="color: white;">{{object.id}}</span></p>
+	<p>Short Link: <a style="color: white;" href="{{object.short_url}}" target="_blank" rel="noopener noreferrer">{{ site_url }}{{ object.short_url }}</a></p>
+	<p> Original Link: <span style="color: white;"> {{ object.url }}</span></p>
+	<div class="back-button">
+		<a href="{% url 'home' %}">Back</a>
+	</div>
+	
+{% endblock %}
