@@ -34,9 +34,9 @@ class Link(models.Model):
 
 # #     # Decodes short url to original url
     @staticmethod
-    def expand(slug):
+    def expand(url):
         # Decrypting slug and getting '(12,)'
-        dirty_str = str(hashids.decode(slug))
+        dirty_str = str(hashids.decode(url))
         # stripping out '(,)'
         clean_id = dirty_str.strip('(,)')
         # now converting '12' into 12
