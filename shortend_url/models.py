@@ -18,9 +18,9 @@ class Link(models.Model):
     def save(self, *args, **kwargs):
         link = Link.objects.values_list('pk', flat=True).last()
         # print('link',link)
-        dirty_str = str(hashids.encode(link))
-        self.hash_id = dirty_str
-        self.shortened_url = 'https://shortner-url1.herokuapp.com/'+dirty_str
+        # dirty_str = str(hashids.encode(link))
+        # self.hash_id = dirty_str
+        # self.shortened_url = 'https://shortner-url1.herokuapp.com/'+dirty_str
         return super().save(*args, **kwargs)
 
 
