@@ -20,7 +20,7 @@ class Link(models.Model):
         # print('link',link)
         dirty_str = str(hashids.encode(link))
         self.hash_id = dirty_str
-        self.shortened_url = 'http://localhost:8000/'+dirty_str
+        self.shortened_url = 'https://shortner-url1.herokuapp.com/'+dirty_str
         return super().save(*args, **kwargs)
 
 
@@ -34,7 +34,7 @@ class Link(models.Model):
 
 # #     # Decodes short url to original url
     @staticmethod
-    def expand(original_url):
+    def encode(original_url):
         # Decrypting slug and getting '(12,)'
         dirty_str = str(hashids.decode(original_url))
         # stripping out '(,)'

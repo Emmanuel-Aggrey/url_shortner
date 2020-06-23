@@ -31,25 +31,21 @@ class ShortToLongUrlSerializer(generics.RetrieveAPIView):
 
     def get(self, request, hash_id=None):
         if hash_id:
-            # return pk,original_url,shortened_url
+            # return original_url,shortened_url
             return self.retrieve(request, hash_id)
     
 
 class LinkCreate(CreateView):
     model = Link
     fields = ["original_url"]
-    # success_url = reverse_lazy('home')
     def form_valid(self, form):
-        # prev = Link.objects.filter(original_url=form.instance.original_url)
- 
-        # print(prev)
-            # return redirect("link_show", pk=prev[0].pk)
+
         return super(LinkCreate, self).form_valid(form)
     
 
     def get_context_data(self, **kwargs):
         context = super(LinkCreate, self).get_context_data(**kwargs)
-        # Passing link_list to display original and short_url in link_form.html
+        # Passing link_list to display 5 objects
         context['link_list'] = Link.objects.all().order_by('-id')[:3]
         context['short_to_full'] = Link.objects.all().order_by('-id')[0]
 
@@ -59,24 +55,20 @@ class LinkCreate(CreateView):
 
 def detailpage(request,pk):
     link = get_object_or_404(Link,pk=pk)
+    # return json of newly created data
     return JsonResponse({'id':link.id,'shortended url':link.shortened_url})
 
-# class LinkShow(DetailView):
-    # model = Link
-#     # A base view for displaying a single object."""
 
-#     def get_context_data(self, **kwargs):
-#         context = super(LinkShow, self).get_context_data(**kwargs)
-#         context['site_url'] = settings.SITE_URL
-#         return context
-
+# redirecting shortend url to full
 class RedirectToLongURL(RedirectView):
     
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
         short_url = kwargs["short_url"]
-        return Link.expand(short_url)
+        return Link.encode(short_url)
+
+
 
 def error404(request, exception):
     context = {

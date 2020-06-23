@@ -11,4 +11,7 @@ python manage.py migrate
 python manage.py runserver
 Your django it's live now open your browser and type 127.0.0.1:8000
 
+
 That's it for the guideline. I hope you enjoy....
+
+live here https://shortner-url1.herokuapp.com/

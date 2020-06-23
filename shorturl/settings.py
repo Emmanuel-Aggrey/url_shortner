@@ -90,6 +90,9 @@ DATABASES = {
     }
 }
 
+prod_db = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -129,6 +132,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-SITE_URL = "localhost:8000"
+SITE_URL = "https://shortner-url1.herokuapp.com"
 
 CORS_ORIGIN_ALLOW_ALL = True
