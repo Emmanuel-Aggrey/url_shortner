@@ -14,6 +14,5 @@ urlpatterns = [
 
 # endpoints
     path('api/<int:pk>/',views.ShortUrlApi.as_view()),
-    path('api/<str:hash_id>/',views.ShortToLongUrlSerializer.as_view()),
 
 ]

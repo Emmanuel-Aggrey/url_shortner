@@ -5,7 +5,7 @@ from django.views.generic import DetailView
 from django.views.generic.base import RedirectView
 from django.views.generic.edit import CreateView
 from rest_framework import generics
-from .serializers import LinkSerializers,ShortToLongUrlSerializer
+from .serializers import LinkSerializers
 from django.http import  JsonResponse
 from django.urls import  reverse_lazy
 from .models import Link
@@ -23,17 +23,7 @@ class ShortUrlApi(generics.RetrieveAPIView):
             # return pk,original_url,shortened_url
             return self.retrieve(request, pk)
 
-class ShortToLongUrlSerializer(generics.RetrieveAPIView):
 
-    serializer_class = ShortToLongUrlSerializer
-    queryset = Link.objects.all()
-    lookup_field = 'hash_id'
-
-    def get(self, request, hash_id=None):
-        if hash_id:
-            # return original_url,shortened_url
-            return self.retrieve(request, hash_id)
-    
 
 class LinkCreate(CreateView):
     model = Link
