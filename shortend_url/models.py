@@ -20,7 +20,7 @@ class Link(models.Model):
         # print('link',link)
         dirty_str = str(hashids.encode(link))
         self.hash_id = dirty_str
-        self.shortened_url = 'https://shortner-url1.herokuapp.com/'+dirty_str
+        self.shortened_url = 'https://shortnen.io/'+dirty_str
         return super().save(*args, **kwargs)
 
 

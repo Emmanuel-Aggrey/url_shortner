@@ -132,6 +132,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-SITE_URL = "https://shortner-url1.herokuapp.com"
+SITE_URL = "https://shortnen.io"
 
 CORS_ORIGIN_ALLOW_ALL = True
