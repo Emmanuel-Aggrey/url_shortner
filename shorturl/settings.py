@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     # local
     'shortend_url',
 
+    # 3rd party
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

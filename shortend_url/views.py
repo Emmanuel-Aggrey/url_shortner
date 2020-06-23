@@ -1,54 +1,82 @@
 from django.conf import settings
 from django.http import JsonResponse
-from django.shortcuts import redirect, render,get_list_or_404
+from django.shortcuts import redirect, render,get_object_or_404,HttpResponse
 from django.views.generic import DetailView
 from django.views.generic.base import RedirectView
 from django.views.generic.edit import CreateView
-
+from rest_framework import generics
+from .serializers import LinkSerializers,ShortToLongUrlSerializer
+from django.http import  JsonResponse
+from django.urls import  reverse_lazy
 from .models import Link
 
 # Create your views here.
 
+class ShortUrlApi(generics.RetrieveAPIView):
+
+    serializer_class = LinkSerializers
+    queryset = Link.objects.all()
+    # lookup_field = 'id'
+
+    def get(self, request, pk=None):
+        if pk:
+            # return pk,original_url,shortened_url
+            return self.retrieve(request, pk)
+
+class ShortToLongUrlSerializer(generics.RetrieveAPIView):
+
+    serializer_class = ShortToLongUrlSerializer
+    queryset = Link.objects.all()
+    lookup_field = 'hash_id'
+
+    def get(self, request, hash_id=None):
+        if hash_id:
+            # return pk,original_url,shortened_url
+            return self.retrieve(request, hash_id)
+    
 
 class LinkCreate(CreateView):
     model = Link
-    fields = ["url"]
-
+    fields = ["original_url"]
+    # success_url = reverse_lazy('home')
     def form_valid(self, form):
-        prev = Link.objects.filter(url=form.instance.url)
-        if prev:
-            return redirect("link_show", pk=prev[0].pk)
+        # prev = Link.objects.filter(original_url=form.instance.original_url)
+ 
+        # print(prev)
+            # return redirect("link_show", pk=prev[0].pk)
         return super(LinkCreate, self).form_valid(form)
+    
 
     def get_context_data(self, **kwargs):
         context = super(LinkCreate, self).get_context_data(**kwargs)
         # Passing link_list to display original and short_url in link_form.html
-        context['link_list'] = Link.objects.all().order_by('-id')[:10]
+        context['link_list'] = Link.objects.all().order_by('-id')[:3]
+        context['short_to_full'] = Link.objects.all().order_by('-id')[0]
+
         # Passing site_url to display domain base
         context['site_url'] = settings.SITE_URL
         return context
 
+def detailpage(request,pk):
+    link = get_object_or_404(Link,pk=pk)
+    return JsonResponse({'id':link.id,'shortended url':link.shortened_url})
 
-class LinkShow(DetailView):
-    model = Link
-    # A base view for displaying a single object."""
+# class LinkShow(DetailView):
+    # model = Link
+#     # A base view for displaying a single object."""
 
-    def get_context_data(self, **kwargs):
-        context = super(LinkShow, self).get_context_data(**kwargs)
-        context['site_url'] = settings.SITE_URL
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super(LinkShow, self).get_context_data(**kwargs)
+#         context['site_url'] = settings.SITE_URL
+#         return context
 
 class RedirectToLongURL(RedirectView):
     
     permanent = False
-    
 
     def get_redirect_url(self, *args, **kwargs):
         short_url = kwargs["short_url"]
         return Link.expand(short_url)
-
-
-
 
 def error404(request, exception):
     context = {

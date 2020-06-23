@@ -1,20 +1,53 @@
 {% extends 'base.html' %}
 {% block content %}
-	<form method="post">
-		{% csrf_token %}
-		{{ form.as_ul }}
-		<input type="submit" value="Shorten" />
-	</form>
+
+<form method="post">
+	
+	{% csrf_token %}
+	{{ form }}
+
+	<input class="btn btn-primary btn-lg" type="submit" value="Shorten" />
+</form> <br>
+
+<div class="container">
 
 	{% for link in link_list %}
-		<ul>	
-			<li>id: {{link.id}}</li>
-			<li>Short Link: <a href="{{ link.short_url }}">{{ site_url }}{{ link.short_url }}</a></li>
-			<!-- <li>Original Link: {{ link.url }}</li> -->
-			<li>view by id: <a href="{% url 'link_show' link.id %}">view by id</a></li>
+	<ul>
+		<li>id: {{link.id}}</li>
+		<li>Shortended url: <a href="{{ link.short_url }}">{{ site_url }}{{ link.short_url }}</a></li>
+		<li>Original Link: {{ link.original_url }}</li>
 
-		</ul>
+	</ul>
 	{% endfor %}
+	<hr class="bg-white">
+	<div id="endpoint">
+		<h3 class="text-white">ENDPOINTS</h3>
+		<div>
+			<small>Retrieve shortened URL info by ID Endpoint</small> <br>
+			<code>Get:</code> <small>http://localhost:8000/api/id/</small> <br>
+			<hr class="bg-white">
+			<small>Retrieve full URL by hash_id</small> <br>
+			<code>Get:</code> <small>http://localhost:8000/api/hash_id/</small> <br>
+			<hr class="bg-white">
+			<small>Redirect Shortended to full URL</small> <br>
+			<small>clicking on Shortended URL redirects to full url</small> <br>
+			<small>Eg. <a href="{{short_to_full.shortened_url}}">{{short_to_full.shortened_url}}</a> <br> redirects to <br> <a
+					href="{{short_to_full.original_url}}">{{short_to_full.original_url}}</a></small> <br>
+			<hr class="bg-white">
+		</div>
+	</div>
+	<style>
+		small {
+			font-size: large;
+			color: white;
+		}
 
+		
+	</style>
+</div>
+<script>
+	url = document.getElementById('id_original_url').placeholder='enter the url'
 	
+</script>
+
 {% endblock %}
