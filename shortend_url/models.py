@@ -9,8 +9,8 @@ hashids = Hashids()
 
 class Link(models.Model):
     original_url = models.URLField('url',unique=True)
-    hash_id = models.CharField(max_length=10, blank=True)
-    shortened_url = models.URLField(blank=True)
+    hash_id = models.CharField(max_length=10, blank=True,editable=False)
+    shortened_url = models.URLField(blank=True,editable=False)
 
     def get_absolute_url(self):
         return reverse("detailpage", kwargs={"pk": self.pk})
@@ -18,9 +18,9 @@ class Link(models.Model):
     def save(self, *args, **kwargs):
         link = Link.objects.values_list('pk', flat=True).last()
         # print('link',link)
-        # dirty_str = str(hashids.encode(link))
-        # self.hash_id = dirty_str
-        # self.shortened_url = 'https://shortner-url1.herokuapp.com/'+dirty_str
+        dirty_str = str(hashids.encode(link))
+        self.hash_id = dirty_str
+        self.shortened_url = 'https://shortner-url1.herokuapp.com/'+dirty_str
         return super().save(*args, **kwargs)
 
 
@@ -34,7 +34,7 @@ class Link(models.Model):
 
 # #     # Decodes short url to original url
     @staticmethod
-    def encode(original_url):
+    def expand(original_url):
         # Decrypting slug and getting '(12,)'
         dirty_str = str(hashids.decode(original_url))
         # stripping out '(,)'

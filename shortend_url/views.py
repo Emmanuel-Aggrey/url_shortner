@@ -66,7 +66,7 @@ class RedirectToLongURL(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         short_url = kwargs["short_url"]
-        return Link.encode(short_url)
+        return Link.expand(short_url)
 
 
 
