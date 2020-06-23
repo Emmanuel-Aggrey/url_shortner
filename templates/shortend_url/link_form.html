@@ -14,8 +14,8 @@
 	{% for link in link_list %}
 	<ul>
 		<li>id: {{link.id}}</li>
-		<li>Shortended url: <a href="{{ link.short_url }}">{{ site_url }}{{ link.short_url }}</a></li><br>
-		<li>Original Link: <a href="{{ link.original_url }}">{{ link.original_url }}</a></li>
+		<li>Shortended url: <a href="{{ link.short_url }}" target="_blank" rel="noopener noreferrer">{{ site_url }}{{ link.short_url }}</a></li> <br>
+		<li>Original Link: <a href="{{ link.original_url }}" target="_blank" rel="noopener noreferrer">{{ link.original_url }}</a></li>
 
 	</ul>
 	{% endfor %}
